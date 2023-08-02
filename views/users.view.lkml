@@ -57,11 +57,6 @@ view: users {
     sql: ${TABLE}.email ;;
   }
 
-  dimension: first_name {
-    type: string
-    sql: ${TABLE}.first_name ;;
-  }
-
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
@@ -103,6 +98,6 @@ view: users {
   }
   measure: count {
     type: count
-    drill_fields: [id, last_name, first_name, order_items.count, events.count]
+    drill_fields: [id, last_name, order_items.count, events.count]
   }
 }
