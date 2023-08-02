@@ -67,6 +67,18 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
+  dimension: first_name {
+    type: string
+    sql: ${TABLE}.first_name ;;
+  }
+
+  dimension: full_name {
+    type: string
+    sql: ${first_name}||' '||${last_name} ;;
+  }
+
+
+
   dimension: latitude {
     type: number
     sql: ${TABLE}.latitude ;;
