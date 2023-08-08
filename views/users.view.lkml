@@ -13,13 +13,6 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
-  measure: total_age {
-    type: sum
-    sql: ${age} ;;  }
-  measure: average_age {
-    type: average
-    sql: ${age} ;;  }
-
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -52,16 +45,6 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
-  dimension: first_name {
-    type: string
-    sql: ${TABLE}.first_name ;;
-  }
-
-  dimension: full_name {
-    type: string
-    sql: ${first_name}||' '||${last_name} ;;
-  }
-
   dimension: latitude {
     type: number
     sql: ${TABLE}.latitude ;;
@@ -91,8 +74,17 @@ view: users {
     type: string
     sql: ${TABLE}.traffic_source ;;
   }
+
+  measure: average_age {
+    type: average
+    sql: ${age} ;;  }
+
   measure: count {
     type: count
     drill_fields: [id, last_name, order_items.count, events.count]
   }
+
+  measure: total_age {
+    type: sum
+    sql: ${age} ;;  }
 }

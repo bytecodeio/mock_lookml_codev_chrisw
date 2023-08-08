@@ -26,6 +26,7 @@ view: products {
   measure: total_cost {
     type: sum
     sql: ${cost} ;;  }
+
   measure: average_cost {
     type: average
     sql: ${cost} ;;  }
