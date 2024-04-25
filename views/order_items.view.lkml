@@ -72,6 +72,70 @@ view: order_items {
     drill_fields: [detail*]
   }
 
+  dimension: created_week_end_date {
+    type: date
+    sql: DATE_ADD(DATE(${created_week}),INTERVAL 7 DAY) ;;
+    datatype: date
+  }
+
+  dimension: created_week_month_end_date {
+    type: date
+    sql: LAST_DAY(DATE(${created_week}),MONTH) ;;
+    datatype: date
+  }
+
+  dimension: created_week_month_start_date {
+    type: date
+    sql: DATE_TRUNC(DATE(${created_week}),MONTH) ;;
+    datatype: date
+  }
+
+  # dimension: is_week_after_month_end {
+  #   type: yesno
+  #   sql:
+  #   ${created_week_end_date} <= ${created_week_month_end_date}
+  #   OR (${created_week_end_date} >= ${created_week_month_end_date}
+  #   AND DATE(${created_week}) <= DATE_ADD(${created_week_month_end_date},INTERVAL 7 DAY)
+  #   )
+  #   ;;
+  # }
+
+  dimension: is_week_after_month_end {
+      type: yesno
+      sql:
+      ${created_week_end_date} <= ${created_week_month_end_date}
+      OR
+      (${created_week_end_date} > ${created_week_month_end_date}
+      AND ${created_week_end_date} >= DATE_ADD(${created_week_month_end_date},INTERVAL 7 DAY)
+      )
+      ;;
+    }
+
+  dimension: current_month_end {
+    type: date
+    sql: LAST_DAY(CURRENT_DATE(),MONTH) ;;
+    convert_tz: no
+  }
+
+  dimension: current_month_start {
+    type: date
+    sql: DATE_TRUNC(CURRENT_DATE(),MONTH) ;;
+    convert_tz: no
+  }
+
+  dimension: is_week_ending_in_current_month {
+    type: yesno
+    sql: ${created_week_end_date} > ${current_month_start}
+    AND ${created_week_end_date} <= ${current_month_end}
+    ;;
+  }
+
+  measure: actual {
+    type: sum
+    sql: ${sale_price} ;;
+    filters: [is_week_ending_in_current_month: "No"]
+  }
+
   set: detail {
     fields: [
       id,
@@ -83,6 +147,37 @@ view: order_items {
       products.name,
       products.id
     ]
+  }
+
+  measure: products {
+    type: count_distinct
+    sql: ${product_id} ;;
+  }
+
+  measure: median_products {
+    type: median
+    sql: ${product_id} ;;
+  }
+
+  measure: average_products {
+    type: average
+    sql: ${product_id} ;;
+  }
+
+  parameter: user_defined_total_selection {
+    type: string
+    suggest_dimension: products.name
+  }
+
+  measure: user_defined_total {
+    type: number
+    sql: COUNT(
+            CASE WHEN ${products.name} = {% parameter user_defined_total_selection %} THEN
+              ${product_id}
+            ELSE null
+            END
+          )
+          ;;
   }
 
 }
