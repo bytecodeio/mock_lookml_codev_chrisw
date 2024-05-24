@@ -4,6 +4,7 @@ include: "/views/order_items.view.lkml"
 include: "/views/products.view.lkml"
 include: "/views/users.view.lkml"
 include: "/views/dt_order_ids.view.lkml"
+include: "/views/dt_weeks.view.lkml"
 
 explore: order_items {
   # always_join: [dt_user_ids]
@@ -43,6 +44,12 @@ explore: order_items {
     relationship: one_to_many
     type: left_outer
     sql_on: ${dt_order_ids.order_id} = ${orders_2.order_id} ;;
+  }
+
+  join: dt_weeks {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: SAFE_CAST(${order_items.created_week_month_start_date} AS STRING) = ${dt_weeks.week};;
   }
 
 }
