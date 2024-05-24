@@ -73,4 +73,11 @@ view: products {
     ]
   }
 
+  # filter: choose_category {
+  #   type: string
+  #   suggest_dimension: category
+  #   # sql: EXISTS (SELECT category FROM products WHERE category LIKE '%Pant%') ;;
+  #   sql: {% condition %} category {% endcondition %};;
+  # }
+
 }

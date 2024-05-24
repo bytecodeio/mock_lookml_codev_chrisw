@@ -180,4 +180,46 @@ view: order_items {
           ;;
   }
 
+## PoP Tests
+  filter: base_cohort {
+    type: date
+  }
+
+  filter: comp_cohort {
+    type: date
+  }
+
+  dimension: is_base_cohort {
+    type: yesno
+    sql: ${created_raw} >= {% date_start base_cohort %}
+        AND ${created_raw} <= {% date_end base_cohort %}
+    ;;
+  }
+
+  dimension: is_comp_cohort {
+    type: yesno
+    sql: ${created_raw} >= {% date_start comp_cohort %}
+    AND ${created_raw} <= {% date_end comp_cohort %}
+    ;;
+  }
+
+  dimension: cohort {
+    type: string
+    case: {
+      when: {
+        sql: ${created_raw} >= {% date_start base_cohort %}
+              AND ${created_raw} <= {% date_end base_cohort %}
+        ;;
+        label: "Base"
+      }
+      when: {
+        sql: ${created_raw} >= {% date_start comp_cohort %}
+        AND ${created_raw} <= {% date_end comp_cohort %}
+        ;;
+        label: "Comparison"
+      }
+      else: "None"
+    }
+  }
+
 }

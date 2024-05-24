@@ -8,3 +8,6 @@ datagroup: mock_lookml_codev_default_datagroup {
 }
 
 persist_with: mock_lookml_codev_default_datagroup
+
+# include: "/views/filter_test.view.lkml"
+# explore: filter_test {}
