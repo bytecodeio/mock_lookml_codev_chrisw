@@ -80,4 +80,8 @@ view: products {
   #   sql: {% condition %} category {% endcondition %};;
   # }
 
+  filter: prefilter {
+    type: string
+  }
+
 }
