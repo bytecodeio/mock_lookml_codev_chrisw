@@ -19,8 +19,7 @@ explore: dt_weeks {}
 datagroup: weekly {
   sql_trigger:
     SELECT
-      MAX(DATE_TRUNC(dt,WEEK)) AS week
-      FROM UNNEST(GENERATE_DATE_ARRAY('2020-01-01', CURRENT_DATE(), INTERVAL 1 WEEK)) as DT
+      SELECT MAX(DATE_TRUNC(dt,WEEK)) AS week
+      FROM UNNEST(GENERATE_DATE_ARRAY('2020-01-01', CURRENT_DATE(), INTERVAL 1 DAY)) as DT
   ;;
-  interval_trigger: "24 hours"
 }
