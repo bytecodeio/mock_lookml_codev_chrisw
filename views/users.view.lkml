@@ -87,4 +87,27 @@ view: users {
   measure: total_age {
     type: sum
     sql: ${age} ;;  }
+
+
+  parameter: ortho_cohort {
+    type: unquoted
+    allowed_value: {
+      label: "All"
+      value: "all"
+    }
+    allowed_value: {
+      label: "Hip Fracture"
+      value: "hip_fracture"
+    }
+  }
+
+  dimension: parameter_liquid_check {
+    type: string
+    sql:
+    {% if ortho_cohort._parameter_value == "hip_fracture" %}
+    "yes"
+    {% else %}
+    "none"
+    {% endif %} ;;
+  }
 }

@@ -2,6 +2,11 @@ view: order_items {
   sql_table_name: `thelook.order_items` ;;
   drill_fields: [id]
 
+  filter: c {
+    type: string
+    default_value: "@{last_week}"
+  }
+
   dimension: id {
     primary_key: yes
     type: number
