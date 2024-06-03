@@ -2,6 +2,54 @@ view: order_items {
   sql_table_name: `thelook.order_items` ;;
   drill_fields: [id]
 
+  parameter: type {
+    type: unquoted
+    default_value: "or"
+    allowed_value: {
+      label: "or"
+      value: "or"
+    }
+    allowed_value: {
+      label: "and"
+      value: "and"
+    }
+  }
+
+  filter: product_list {
+    type: number
+    suggest_dimension: product_id
+    # sql: EXISTS (SELECT order_id FROM order_items AS oi WHERE order_items.order_id = oi.order_id AND {% condition %} product_id {% endcondition %}) ;;
+    sql:
+      {% if type._parameter_value == 'and' %}
+      EXISTS (
+          SELECT oi.order_id
+          FROM order_items AS oi
+          INNER JOIN (
+            SELECT oi2.order_id, COUNT(DISTINCT oi2.product_id)
+            FROM order_items AS oi2
+            WHERE 0=0
+            AND {% condition %} oi2.product_id {% endcondition %}
+            GROUP BY 1
+            HAVING COUNT(DISTINCT oi2.product_id) >
+            (SELECT COUNT(DISTINCT oi2.product_id)
+            FROM order_items AS oi2
+            WHERE 0=0
+            AND {% condition %} oi2.product_id {% endcondition %}
+            ) - 1
+          ) as oi3
+          ON oi.order_id = oi3.order_id
+          WHERE 0=0
+          AND order_items.order_id = oi.order_id
+          AND {% condition %} oi.product_id {% endcondition %}
+          )
+       {% elsif type._parameter_value == 'or' %}
+      EXISTS (SELECT order_id FROM order_items AS oi WHERE order_items.order_id = oi.order_id AND {% condition %} product_id {% endcondition %})
+      {% else %}
+      0=0
+      {% endif %}
+        ;;
+  }
+
   filter: c {
     type: string
     default_value: "@{last_week}"

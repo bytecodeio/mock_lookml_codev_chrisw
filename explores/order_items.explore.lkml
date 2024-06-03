@@ -5,6 +5,8 @@ include: "/views/products.view.lkml"
 include: "/views/users.view.lkml"
 include: "/views/dt_order_ids.view.lkml"
 include: "/views/dt_weeks.view.lkml"
+include: "/views/dynamic_crossview.view.lkml"
+
 
 explore: order_items {
   # always_join: [dt_user_ids]
@@ -50,6 +52,12 @@ explore: order_items {
     type: left_outer
     relationship: many_to_one
     sql_on: SAFE_CAST(${order_items.created_week_month_start_date} AS STRING) = ${dt_weeks.week};;
+  }
+
+  join: dynamic_crossview {
+    type: left_outer
+    relationship: one_to_one
+    sql:  ;;
   }
 
 }

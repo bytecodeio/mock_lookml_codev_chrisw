@@ -2,6 +2,64 @@ view: products {
   sql_table_name: `thelook.products` ;;
   drill_fields: [id]
 
+  parameter: type {
+    type: unquoted
+    default_value: "or"
+    allowed_value: {
+      label: "Any"
+      value: "or"
+    }
+    allowed_value: {
+      label: "All"
+      value: "and"
+    }
+  }
+
+  filter: brand_list {
+    type: string
+    suggest_dimension: brand
+    # sql: EXISTS (SELECT order_id FROM order_items AS oi WHERE order_items.order_id = oi.order_id AND {% condition %} product_id {% endcondition %}) ;;
+    sql:
+      {% if type._parameter_value == 'and' %}
+      EXISTS (
+          SELECT oi.order_id
+          FROM order_items AS oi
+          INNER JOIN products AS p
+          ON oi.product_id = p.id
+          INNER JOIN (
+            SELECT oi2.order_id, COUNT(DISTINCT p2.brand)
+            FROM products AS p2
+            INNER JOIN order_items oi2
+            ON p2.id = oi2.product_id
+            WHERE 0=0
+            AND {% condition %} p2.brand {% endcondition %}
+            GROUP BY 1
+            HAVING COUNT(DISTINCT p2.brand) >
+            (SELECT COUNT(DISTINCT p2.brand)
+            FROM products AS p2
+            WHERE 0=0
+            AND {% condition %} p2.brand {% endcondition %}
+            ) - 1
+          ) as oi3
+          ON oi.order_id = oi3.order_id
+          WHERE 0=0
+          AND order_items.order_id = oi.order_id
+          AND {% condition %} p.brand {% endcondition %}
+          )
+       {% elsif type._parameter_value == 'or' %}
+      EXISTS (
+        SELECT order_id
+        FROM order_items AS oi
+        INNER JOIN products AS p
+          ON oi.product_id = p.id
+        WHERE order_items.order_id = oi.order_id
+        AND {% condition %} p.brand {% endcondition %})
+      {% else %}
+      0=0
+      {% endif %}
+        ;;
+  }
+
   dimension: id {
     primary_key: yes
     type: number

@@ -2,6 +2,12 @@ view: users {
   sql_table_name: `thelook.users` ;;
   drill_fields: [id]
 
+  filter: city_list {
+    type: string
+    suggest_dimension: city
+    sql: EXISTS (SELECT id FROM users AS u WHERE users.id = u.id AND {% condition %} city {% endcondition %}) ;;
+  }
+
   dimension: id {
     primary_key: yes
     type: number
