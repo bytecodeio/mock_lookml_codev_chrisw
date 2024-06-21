@@ -4,12 +4,12 @@ include: "/views/order_items.view.lkml"
 include: "/views/products.view.lkml"
 include: "/views/users.view.lkml"
 include: "/views/dt_order_ids.view.lkml"
+include: "/views/dt_users.view.lkml"
 include: "/views/dt_weeks.view.lkml"
 include: "/views/dynamic_crossview.view.lkml"
 
 
 explore: order_items {
-  # always_join: [dt_user_ids]
 
   join: users {
     type: left_outer
@@ -58,6 +58,13 @@ explore: order_items {
     type: left_outer
     relationship: one_to_one
     sql:  ;;
+  }
+
+  join: dt_users {
+    type: inner
+    relationship: many_to_many
+    sql_on: ${order_items.user_id} = ${dt_users.user_id} ;;
+
   }
 
 }
