@@ -3,6 +3,7 @@ connection: "looker_partner_demo"
 include: "/explores/order_items.explore.lkml"
 include: "/views/dt_weeks.view.lkml"
 include: "/explores/eg_join_seq.explore.lkml"
+include: "/explores/embed_demo.explore.lkml"
 
 
 datagroup: mock_lookml_codev_default_datagroup {
