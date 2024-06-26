@@ -16,6 +16,12 @@ view: sdt_example {
     ;;
   }
 
+  dimension: pk {
+    type: string
+    primary_key: yes
+    sql: GENERATE_UUID() ;;
+  }
+
   dimension: list1 {
     type: string
   }
