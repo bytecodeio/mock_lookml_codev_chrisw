@@ -41,12 +41,12 @@ explore: order_items {
     sql_on: ${order_items.order_id} = ${dt_order_ids.order_id} ;;
   }
 
-  join: orders_2 {
-    from: order_items
-    relationship: one_to_many
-    type: left_outer
-    sql_on: ${dt_order_ids.order_id} = ${orders_2.order_id} ;;
-  }
+  # join: orders_2 {
+  #   from: order_items
+  #   relationship: one_to_many
+  #   type: left_outer
+  #   sql_on: ${dt_order_ids.order_id} = ${orders_2.order_id} ;;
+  # }
 
   join: dt_weeks {
     type: left_outer

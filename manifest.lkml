@@ -21,3 +21,10 @@ constant: current_week {
   value: " (SELECT SAFE_CAST(MAX(DATE_TRUNC(dt,WEEK)) AS STRING)
   FROM UNNEST(GENERATE_DATE_ARRAY('2020-01-01', CURRENT_DATE(), INTERVAL 1 DAY)) as DT)"
 }
+
+
+visualization: {
+  id: "custom_viz_1"
+  label: "Custom Viz 1 - CW"
+  file: "custom/visualizations/bundle.js"
+}
