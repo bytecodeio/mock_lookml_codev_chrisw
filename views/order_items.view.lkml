@@ -59,12 +59,25 @@ view: order_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    required_access_grants: [ limited_access ]
   }
 
   dimension_group: created {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year]
     sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: week_starting_tuesday {
+    type: date
+    sql: DATE_SUB(${created_date}, INTERVAL (MOD((EXTRACT(DAYOFWEEK FROM ${created_date}) + 5),7)-1) DAY) ;;
+    datatype: date
+  }
+
+  dimension: week_ending_monday {
+    type: date
+    sql: DATE_ADD(DATE_SUB(${created_date}, INTERVAL (MOD((EXTRACT(DAYOFWEEK FROM ${created_date}) + 5),7)-1) DAY), INTERVAL 6 DAY) ;;
+    datatype: date
   }
 
   dimension_group: delivered {

@@ -25,3 +25,8 @@ datagroup: weekly {
       FROM UNNEST(GENERATE_DATE_ARRAY('2020-01-01', CURRENT_DATE(), INTERVAL 1 DAY)) as DT
   ;;
 }
+
+access_grant: limited_access {
+  allowed_values: [ "ltd", "all" ]
+  user_attribute: chrisw_test_access_level
+}
