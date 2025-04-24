@@ -8,7 +8,7 @@ view: custom_data {
         UNION ALL
         SELECT 'C' AS id, 89 AS val, 11 AS previous_val
         UNION ALL
-        SELECT 'D' AS id, 50 AS val, 11 AS previous_val
+        SELECT 'D' AS id, 5 AS val, 68996611 AS previous_val
         UNION ALL
         SELECT 'E' AS id, 3400 AS val, 11 AS previous_val
         UNION ALL
@@ -18,7 +18,7 @@ view: custom_data {
         UNION ALL
         SELECT 'H' AS id, 1500 AS val, 11 AS previous_val
         UNION ALL
-        SELECT 'I' AS id, 66 AS val, 11 AS previous_val
+        SELECT 'I' AS id, 6 AS val, 6999000 AS previous_val
         UNION ALL
         SELECT 'J' AS id, 18 AS val, 11 AS previous_val
     ;;
@@ -28,7 +28,7 @@ view: custom_data {
   dimension: previous_val {}
   measure: delta {
     type: number
-    sql: 1 - SAFE_DIVIDE(${val},${previous_val}) ;;
+    sql: (SAFE_DIVIDE(${val},${previous_val})) ;;
     value_format_name: percent_2
   }
 
