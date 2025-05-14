@@ -26,7 +26,20 @@ datagroup: weekly {
   ;;
 }
 
+datagroup: daily_6am_datagroup {
+  sql_trigger:
+    -- updates once per day at a 6AM ET
+    -- note the hour (6) in the calculation 60*60*6
+    SELECT FLOOR(((TIMESTAMPDIFF(SECOND,CURRENT_TIMESTAMP(),'1970-01-01 00:00:00')) - 60*60*10)/(60*60*24)) ;;
+}
+
+datagroup: chris_w_never {
+  sql_trigger: SELECT 0 ;;
+}
+
 access_grant: limited_access {
   allowed_values: [ "ltd", "all" ]
   user_attribute: chrisw_test_access_level
 }
+
+include: "/views/custom_data_2.view.lkml"
