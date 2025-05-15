@@ -43,3 +43,28 @@ access_grant: limited_access {
 }
 
 include: "/views/custom_data_2.view.lkml"
+
+test: sales_is_greater_than_zero {
+  explore_source:  order_items {
+    column:  sale_price {
+      field:  order_items.sale_price
+    }
+  }
+  assert:  revenue_is_expected_value {
+    expression: ${order_items.sale_price} > 0 ;;
+  }
+}
+
+include: "/views/fips_sql.view.lkml"
+include: "/views/business_areas.view.lkml"
+
+
+map_layer: custom_counties {
+  url: "https://gist.githubusercontent.com/sdwfrost/d1c73f91dd9d175998ed166eb216994a/raw/e89c35f308cee7e2e5a784e1d3afc5d449e9e4bb/counties.geojson"
+  property_key: "GEOID"
+}
+
+map_layer: business_areas {
+  file: "/geography/business_areas.json"
+  property_key: "business_area"
+}

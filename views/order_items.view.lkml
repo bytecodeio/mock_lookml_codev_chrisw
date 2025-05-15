@@ -237,6 +237,11 @@ view: order_items {
     suggest_dimension: products.name
   }
 
+  filter: user_defined_filter {
+    type: string
+    suggest_dimension: products.name
+  }
+
   measure: user_defined_total {
     type: number
     sql: COUNT(
@@ -246,6 +251,18 @@ view: order_items {
             END
           )
           ;;
+  }
+
+  dimension: product_satisfies_filter {
+    type: yesno
+    hidden: yes
+    sql: {% condition user_defined_filter %} ${products.name} {% endcondition %} ;;
+  }
+
+  measure: user_defined_filter_total {
+    type: count_distinct
+    sql: ${product_id} ;;
+    filters: [product_satisfies_filter: "Yes"]
   }
 
 ## PoP Tests
