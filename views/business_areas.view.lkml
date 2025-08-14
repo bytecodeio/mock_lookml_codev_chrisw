@@ -3,17 +3,26 @@ view: business_areas {
   derived_table: {
     sql:
 
-      SELECT 1 AS business_area, 104136 AS val
+      SELECT 1 AS business_area, 50000 AS items
       UNION ALL
-      SELECT 2 AS business_area, 62138 AS val
+      SELECT 1 AS business_area, 150000 AS items
       UNION ALL
-      SELECT 1 AS business_area, 31757 AS val
+      SELECT 2 AS business_area, 250000 AS items
       UNION ALL
-      SELECT 2 AS business_area, 30995 AS val
+      SELECT 2 AS business_area, 350000 AS items
       UNION ALL
-      SELECT 2 AS business_area, 30580 AS val
+      SELECT 3 AS business_area, 450000 AS items
       UNION ALL
-      SELECT 3 AS business_area, 29807 AS val
+      SELECT 3 AS business_area, 550000 AS items
+      UNION ALL
+      SELECT 4 AS business_area, 650000 AS items
+      UNION ALL
+      SELECT 4 AS business_area, 750000 AS items
+      UNION ALL
+      SELECT 5 AS business_area, 850000 AS items
+      UNION ALL
+      SELECT 5 AS business_area, 950000 AS items
+
 
       ;;
   }
@@ -24,14 +33,14 @@ view: business_areas {
     map_layer_name: business_areas
   }
 
-  dimension: value {
+  dimension: items {
     type: number
-    sql: ${TABLE}.val ;;
+    sql: ${TABLE}.items ;;
   }
 
-  measure: totals {
+  measure: total_items {
     type: sum
-    sql: ${value} ;;
+    sql: ${items} ;;
   }
 
 }
