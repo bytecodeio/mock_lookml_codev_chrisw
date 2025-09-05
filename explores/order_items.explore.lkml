@@ -11,10 +11,10 @@ include: "/views/dynamic_crossview.view.lkml"
 
 explore: order_items {
 
-  access_filter: {
-    field: users.state
-    user_attribute: chrisw_state
-  }
+  # access_filter: {
+  #   field: users.state
+  #   user_attribute: chrisw_state
+  # }
 
   join: users {
     type: left_outer
