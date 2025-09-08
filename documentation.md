@@ -23,6 +23,7 @@
 
 ## Access Filters
 * Access filters must be used in conjunction with user attributes.
+* A user attribute configured to be editable by users cannot be used for an access filter.
 * Access filters are explore specific — the parameter must be applied to each explore that needs to be restricted.
 * Every user, including admins, accessing an explore with an access filter must have a value for the referenced user attribute.
 * Admins (or other users) can access all values with specific advanced filter values.
@@ -44,6 +45,7 @@
 * Dashboards with high runtimes, slow or heavily queried explores, and frequently used fields are common scenarios that benefit from aggregate awareness.
 * Aggregate tables must contain all dimensions and measures required to answer a user's query including dimensions used in filters.
 * Use existing dimensions and measures from the base view to maintain consistency across granular and aggregate levels.
+* Summarizing date granularity is a common use case for aggregate awareness. You can also use aggregate awareness to summarize any type of data, not just date fields.
 
 ## Dashboard Design
 * Every dashboard tile runs a separate query -- limit the number of tiles to fewer than 15 on a single dashboard.
